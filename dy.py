@@ -1,6 +1,5 @@
 import requests
 from bs4 import BeautifulSoup
-import datetime
 import csv
 
 def getContestInfo():
@@ -50,11 +49,10 @@ def getContestInfo():
 if __name__ == "__main__":
     f = open("contestInfo.csv", "w", newline="")
     csv_writer = csv.writer(f)
-    csv_writer.writerow([str(datetime.datetime.now())])
+
     ContestInfo = getContestInfo()
     csv_writer.writerow(['#','Who','=','*','A','B','C','D','E'])
     for each in ContestInfo:
         csv_writer.writerow(each)
 
-    csv_writer.writerow([str(datetime.datetime.now())])
     f.close()
