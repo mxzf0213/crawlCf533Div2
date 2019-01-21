@@ -5,6 +5,8 @@ import csv
 def getContestInfo():
     ContestInfo = []
     url = "https://codeforces.com/contest/1105/standings/page/"
+    #是否显示打星
+    postParams = "?action=toggleShowUnofficial&newShowUnofficialValue=true"
     headers = \
     {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:64.0) Gecko/20100101 Firefox/64.0',
@@ -16,10 +18,11 @@ def getContestInfo():
     while(True):
         page_cnt = page_cnt + 1
 
-        if page_cnt == 28:
+        if page_cnt == 43:
             break
 
-        r = requests.get(url+str(page_cnt), headers=headers, timeout=10)
+        r = requests.get(url+str(page_cnt)+postParams,headers=headers, timeout=10)
+        #print(r.text)
         if r.status_code != 200:
             break
 
@@ -31,7 +34,10 @@ def getContestInfo():
             each = contents[i]
             now = []
             now.append(each.td.text.strip())
-            now.append(each.a.text.strip())
+            if len(each.find_all('small')) !=0:
+                now.append("*"+each.a.text.strip())
+            else:
+                now.append(each.a.text.strip())
 
             for i in range(5,8,2):
                 try:
